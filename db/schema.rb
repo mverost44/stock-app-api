@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2) do
+ActiveRecord::Schema.define(version: 2019_03_11_185600) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,22 @@ ActiveRecord::Schema.define(version: 2) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_examples_on_user_id"
+  end
+
+  create_table "trades", force: :cascade do |t|
+    t.string "ticker_symbol"
+    t.decimal "entry_price", precision: 10, scale: 2
+    t.decimal "exit_price", precision: 10, scale: 2
+    t.integer "entry_size"
+    t.integer "exit_size"
+    t.datetime "entry_date"
+    t.datetime "exit_date"
+    t.boolean "open", default: true, null: false
+    t.decimal "total_profit_loss", precision: 10, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_trades_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -34,4 +50,5 @@ ActiveRecord::Schema.define(version: 2) do
   end
 
   add_foreign_key "examples", "users"
+  add_foreign_key "trades", "users"
 end
