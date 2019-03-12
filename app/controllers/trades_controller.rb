@@ -31,7 +31,7 @@ class TradesController < CalculationsController
       render json: @trade.errors, status: :unprocessable_entity
 
     elsif @trade.attributes['entry_size'].to_i == @update_params['exit_size'].to_i
-    total_profit_loss = profit_loss(@trade.attributes['entry_price'], @update_params['exit_price'], @trade.attributes['entry_size'])
+    total_profit_loss = buy_profit_loss(@trade.attributes['entry_price'], @update_params['exit_price'], @update_params['exit_size'])
     @update_params['total_profit_loss'] = @trade.attributes['total_profit_loss'].to_i + total_profit_loss.to_i
     @update_params['open'] = false
 
@@ -40,13 +40,22 @@ class TradesController < CalculationsController
 
     elsif @trade.attributes['entry_size'].to_i > @update_params['exit_size'].to_i
       @update_params['entry_size'] = @trade.attributes['entry_size'].to_i - @update_params['exit_size'].to_i
-      current_profit_loss = current_profit_loss(@trade.attributes['entry_price'], @update_params['exit_price'], @update_params['exit_size'])
+      current_profit_loss = buy_profit_loss(@trade.attributes['entry_price'], @update_params['exit_price'], @update_params['exit_size'])
 
       @update_params['total_profit_loss'] = @trade.attributes['total_profit_loss'].to_i + current_profit_loss.to_i
       @update_params['open'] = true
 
       @trade.update(@update_params)
       render json: @trade
+
+    elsif @trade.attributes['entry_size'].to_i * -1 == @update_params['exit_size'].to_i
+    total_profit_loss = short_profit_loss(@trade.attributes['entry_price'], @update_params['exit_price'], @update_params['exit_size'])
+    @update_params['total_profit_loss'] = @trade.attributes['total_profit_loss'].to_i + total_profit_loss.to_i
+    @update_params['open'] = false
+
+    @trade.update(@update_params)
+    render json: @trade
+
     else
       render json: @trade.errors, status: :unprocessable_entity
     end
