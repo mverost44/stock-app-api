@@ -1,6 +1,6 @@
 #!/bin/bash
 
-curl "http://localhost:4741/trades/${ID}" \
+curl "http://localhost:4741/trades/${SYMBOL}" \
   --include \
   --request PATCH \
   --header "Content-Type: application/json" \

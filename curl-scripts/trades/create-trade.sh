@@ -7,6 +7,7 @@ curl "http://localhost:4741/trades" \
   --header "Authorization: Token token=${TOKEN}" \
   --data '{
     "trade": {
+      "ticker_symbol": "'"${SYMBOL}"'",
       "entry_price": "'"${ENTRY_PRICE}"'",
       "entry_size": "'"${ENTRY_SIZE}"'"
     }
