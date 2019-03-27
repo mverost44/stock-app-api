@@ -1,6 +1,6 @@
 #!/bin/bash
 
-curl "http://localhost:4741/trades/${SYMBOL}" \
+curl "http://localhost:4741/trades/${ID}" \
   --include \
   --request PATCH \
   --header "Content-Type: application/json" \
@@ -8,9 +8,7 @@ curl "http://localhost:4741/trades/${SYMBOL}" \
   --data '{
     "trade": {
       "exit_price": "'"${EXIT_PRICE}"'",
-      "exit_size": "'"${EXIT_SIZE}"'",
-      "total_profit_loss": "'"${P_L}"'",
-      "open": "'"${OPEN}"'"
+      "exit_size": "'"${EXIT_SIZE}"'"
     }
   }'
 
